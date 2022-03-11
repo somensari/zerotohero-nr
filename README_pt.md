@@ -23,8 +23,8 @@ Aqui estão as principais etapas ou tarefas deste exercício:
 - Clonar, compilar e construir o aplicativo PetClinic
 - Instalar e configurar o agente APM New Relic
 - Instalar e configurar o New Relic Browser Agent
-- Configurar relatórios de log do PetClinic
-- Painel
+- Configurar logs do PetClinic
+- Dashboards
 
 
 ## Pré-requisitos (ou pré-trabalho)
