@@ -92,39 +92,41 @@ The infrastructure agent is responsible for both
 
 New Relic offers wizards to walk you through the setup of the agents and instrumentation. To get to the wizard, click on the top right corner icon "Add more data" 
 
-infra-1
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/infra-1.png)
 
-You can then type Linux on the search box and select the distro you are using:
-infra-2
+You can then type "Linux" on the search box and select the distro you are using:
 
-Select the OS/Distro:
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/infra-2.png)
 
-infra-3
+Then You select the OS/Distro:
 
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/infra-3.png)
 
-You'll be taken to a short wizard where you will select some options. The default settings should work, no need to make changes. The wizard will output a few commands that need to be executed in the shell. 
+You'll be taken to a short wizard where you will select some options. The default settings should work, no need to make changes. 
 
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/infra-4.png)
 
-Here's an example
+The wizard will output a few commands that need to be executed in the shell. Here's an example:
+
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/infra-5.png)
 
 ```
 curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo NEW_RELIC_API_KEY=<X12314125123123123123123> NEW_RELIC_ACCOUNT_ID=999999 /usr/local/bin/newrelic install
 ```
+
 *(DO NOT COPY AND PASTE this command during your exercise as it will not work. You should copy the command from your New Relic Install Wizard page. The command above has the API KEY and ACCOUNT NUMBER values REDACTED, and we need the actual values associated with your account)*
 
 This command will download and set up the New Relic Infrastructure Agent. Once the installation is completed, you can navigate to the Infrastructure page to see the data from your host.  
 
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/infra-6.png)
 
-Infra-6
+You can navigate and see your host information by cicking on Explorer >> Hosts >> Host Name (workshop)
 
-
-Explorer >> Hosts
-infra-7
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/infra-7.png)
 
 Once you see data flowing for your host, we are then ready to get started with the Application setup
 
 
---------------------------------------------------
 ### Spring Pet Clinic Setup
 
 #### Download and Build the Spring PetClinic App
@@ -164,15 +166,30 @@ Now that the application is running, it is time to set up the APM instrumentatio
 
 Let's continue the process by visiting the New Relic UI again. 
 
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/apm-1.png)
+
 Explorer >> Services - APM >> Add More Data
+
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/apm-2.png)
+
+Select "Java"
+
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/apm-3.png)
+
+The wizard will guide you through the download of required files
+
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/apm-4.png)
+
+Java application monitoring setup requires manual download of the core files
+
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/apm-5.png)
 
 The APM Instrumentation Wizard will show a few options for you to select, things like application name, environment, etc. In this scenario, we are using:
 - Application Name: petclinic
 - Environment: conf21
 
-At the end of the wizard, you'll be given a set of commands to run
-
 *(make sure you are in the spring-petclinic directory)*
+
 ```
 cd ~/spring-petclinic
 ```
@@ -184,7 +201,6 @@ curl -O https://download.newrelic.com/newrelic/java-agent/newrelic-agent/current
 ```
 unzip newrelic-java.zip
 ```
-
 
 The agent is highly configurable and comes with most of the configuration already preset, but there are two mandatory properties we need to configure: 
 - Application Name 
@@ -208,7 +224,7 @@ vim newrelic/newrelic.yml
 and change the lines 
 
 ```
-license_key: 00c10339505603eeee2e5cd6b6cf7bee49282ee6
+license_key: YYYYYY
 app_name: PetClinic
 ```
 
@@ -218,7 +234,7 @@ Lastly, we will run our application adding the -javaagent tag in front of the co
     java  -javaagent:./newrelic.jar -jar target/spring-petclinic-*-SNAPSHOT.jar
 ```
 
-IMAGE?
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/apm-6.png)
 
 Let's go visit our application again to generate some traffic. 
 
@@ -237,7 +253,11 @@ Explore >> Services >> APM?
 
 For the End User instrumentation, we will add the New Relic Browser Javascript Agent (LINK?) snippet in the pages. We will use the wizard again.
 
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/browser-1.png)
+
 New Relic Browser offers two different options for the deployment method: Automatic Instrumentation Via APM and Copy-Paste
+
+![Click on Add More Data](https://raw.githubusercontent.com/somensari/zerotohero-nr/main/images/browser-2.png)
 
 1) Automatic Instrumentation Via APM is the recommended approach where the APM Agent will instrument the pages by automatically injecting the javascript agent into the pages.
 
@@ -246,6 +266,8 @@ New Relic Browser offers two different options for the deployment method: Automa
 The wizard will then show a snipped of HTML code that needs to be place at the top at the pages (preferably in the < HEAD > section). 
 
 You can keep the options on section 2 with default values (Distributed Tracing and Cookie Collection)
+
+(IMAGE)
 
 Last Step is to Name The application. Because we have the application already instrumented on APM, you should be able to "Search" and find the PetClinic in the list.
 
@@ -257,15 +279,17 @@ The Spring PetClinic application uses a single HTML page as the "layout" page th
 
 Let's then edit the layout page:
 
+```
     vim src/main/resources/templates/fragments/layout.html
+```
 
 and let's insert the snipped we generated above in the < HEAD > section of the page.
 
 Now we need to rebuild the application and run it again:
-
+```
     ./mvnw package -Dmaven.test.skip=true
     java  -javaagent:./newrelic.jar -jar target/spring-petclinic-*-SNAPSHOT.jar
-
+```
 Then let's visit the application again to generate more traffic, now we should see RUM traces being reported.
 
     http://<VM_IP_ADDRESS>:8080 
@@ -284,7 +308,14 @@ For the New Relic Logs component, we will configure the Spring PetClinic applica
 
 
 #### Spring Pet Clinic Logback Setting
-The Spring PetClinic application can be configure to use a number of different java logging libraries. In this scenario, we are using logback. Here's a sample logback configuration file:
+The Spring PetClinic application can be configure to use a number of different java logging libraries. In this scenario, we are using logback. Let's create a logback configuration file:
+
+We just need to create a file named logback.xml in the configuration folder. 
+```
+    vim src/main/resources/logback.xml
+```
+
+and add the following content:
 ```
     <configuration>
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -305,11 +336,7 @@ The Spring PetClinic application can be configure to use a number of different j
 </configuration>
 ```
 
-We just need to create a file named logback.xml in the configuration folder. 
-```
-    vim src/main/resources/logback.xml
-```
-and paste the XML content from the snippet above. After that, we need to rebuild the application and run it again:
+After that, we need to rebuild the application and run it again:
 ```
     ./mvnw package -Dmaven.test.skip=true
     java  -javaagent:./newrelic.jar -jar target/spring-petclinic-*-SNAPSHOT.jar
@@ -320,12 +347,10 @@ Then let's visit the application again to generate more traffic, now we should s
     http://<VM_IP_ADDRESS>:8080 
 (feel free to navigate and click around )
 
-
-
 #### New Relic Infrastructure Log Configuration
 We need to configure the New Relic Infrastructure Agent to tail the Spring Pet Clinic log file and report the data to the New Relic endpoint.
 
-The logging configuration files can be found 	/etc/newrelic-infra/logging.d/, with a few examples
+The logging configuration files can be found /etc/newrelic-infra/logging.d/, with a few examples
 
 So we need to create an yaml file
 
@@ -333,35 +358,27 @@ So we need to create an yaml file
 sudo vim /etc/newrelic-infra/logging.d/petclinic.yaml
 ```
 
+and add the following lines:
 ```
 logs:
   - name: petclinic-log
     file: /tmp/spring-petclinic.log
 ```
 
-
 And paste the contents from the snippet above. 
-
-(MAYBE NOT)
-
-Once the file is created, we need to restart the agent
-
-    sudo systemctl restart td-agent
-
------
-
 
 Then visit:
 Explore > Logs 
 
+(IMAGE)
+
 And you can add a filter to select only log messages from your host and the Spring PetClinic Application:
 
 Fields
-Add Filter > Fields > host.name > your host name
+**** hostname ****
+**** AppService ****
 
 Add Filter > Fields > service.name > your application name
 
 ## Summary 
 This the end of the exercise and we certainly covered a lot of ground. At this point you should have metrics, traces and logs being reported into your New Relic account.
-
-
